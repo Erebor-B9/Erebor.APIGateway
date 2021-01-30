@@ -15,9 +15,11 @@ namespace Erebor.APIGateway
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration().MinimumLevel.
-                Override("Microsoft", LogEventLevel.Warning).
-                WriteTo.Console().WriteTo.File("log.txt",LogEventLevel.Warning).CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console().WriteTo.File("log.txt",LogEventLevel.Warning).CreateLogger();
             try
             {
                 CreateHostBuilder(args).Build().Run();
