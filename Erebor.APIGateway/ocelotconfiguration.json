@@ -1,0 +1,65 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Auth/Login",
+      "UpstreamPathTemplate": "/erebor/login",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/refreshtoken",
+      "UpstreamPathTemplate": "/erebor/refreshtoken",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/CreateUser",
+      "UpstreamPathTemplate": "/erebor/CreateUser",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/user/updateUserRole",
+      "UpstreamPathTemplate": "/erebor/updateUserRole",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  },
+  "DangerousAcceptAnyServerCertificateValidator": true
+}
+
