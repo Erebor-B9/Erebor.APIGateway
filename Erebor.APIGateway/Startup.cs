@@ -31,43 +31,42 @@ namespace Erebor.APIGateway
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
-            //IIS integration 
-            //services.Configure<IISOptions>(x =>
-            //{
-            //    x.ForwardClientCertificate = false;
-            //});
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Erebor.APIGateway", Version = "v1" });
-            });
-            
-            //ToDo: retry!!
             services.AddOcelot();
+            services.AddSwaggerForOcelot(Configuration);
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public  void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UsePathBase("/gateway");
             loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Erebor.APIGateway v1"));
+               
             }
 
-            await app.UseOcelot();
+          
             app.UseRouting();
 
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
+
+          
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapGet("/", context => context.Response.WriteAsync("Erebor ApiGateway"));
             });
-           
+            app.UseSwaggerForOcelotUI(opt =>
+                {
+                    opt.DownstreamSwaggerEndPointBasePath = "/gateway/swagger/docs";
+                    opt.PathToSwaggerGenerator = "/swagger/docs";
+                })
+                .UseOcelot()
+                .Wait();
+
         }
     }
 }

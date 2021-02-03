@@ -19,7 +19,7 @@ namespace Erebor.APIGateway
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Console().WriteTo.File("log.txt",LogEventLevel.Warning).CreateLogger();
+                .WriteTo.Console().WriteTo.File("log.txt", LogEventLevel.Warning).CreateLogger();
             try
             {
                 CreateHostBuilder(args).Build().Run();
@@ -36,13 +36,19 @@ namespace Erebor.APIGateway
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(c =>
-                {
-                    c.AddJsonFile("ocelotconfiguration.json", optional: false, reloadOnChange: true);
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                }).UseSerilog();
+            Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostingcontext, config) =>
+            {
+                config
+                    .SetBasePath(hostingcontext.HostingEnvironment.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{hostingcontext.HostingEnvironment.EnvironmentName}.json",
+                        optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("ocelot.json")
+                    .AddEnvironmentVariables();
+            }).ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            }).UseSerilog();
     }
 }

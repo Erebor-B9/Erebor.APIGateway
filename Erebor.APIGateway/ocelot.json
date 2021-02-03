@@ -34,6 +34,7 @@
       "UpstreamHttpMethod": [
         "Post"
       ],
+      "SwaggerKey": "identity",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -48,11 +49,24 @@
       "UpstreamHttpMethod": [
         "Post"
       ],
+      "SwaggerKey": "identity",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 5001
+        }
+      ]
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "identity",
+      "Config": [
+        {
+          "Name": "Identity API",
+          "Version": "v1",
+          "Url": "http://localhost:5001/swagger/v1/swagger.json"
         }
       ]
     }
